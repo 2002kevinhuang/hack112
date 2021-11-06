@@ -13,8 +13,9 @@ while(driver.current_url != "https://twitter.com/home"):
     print("Logging in")
 print("logged in")
 
+time.sleep(5)
 html =  BeautifulSoup(driver.page_source, "html.parser")
-result = html.find_all({"class":"css-1dbjc4n r-1iusvr4 r-16y2uox r-1777fci r-kzbkwu"})
+result = html.find_all("div",{"class":"css-1dbjc4n r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l"})
 print(result)
 for item in result:
     print(item)

@@ -16,7 +16,6 @@ def reddit():
     result = html.find_all("h3",{"class":"_eYtD2XCVieq6emjKBH3m"})
     results = []
     for item in result:
-        print(item.text)
         results.append(item.text)
     return(results)
 
