@@ -16,10 +16,11 @@ print("logged in")
 time.sleep(5)
 html =  BeautifulSoup(driver.page_source, "html.parser")
 result = html.find_all("div",{"class":"css-1dbjc4n r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l"})
-print(result)
+results = []
 for item in result:
-    print(item)
-    content = item.find({"class":"css-901oao css-16my406 r-poiln3 r-bcqeeo r-qvutc0"})
-    print(item.text)
-
+    tweet = item.find("div",{"class":"css-901oao r-1fmj7o5 r-37j5jr r-a023e6 r-16dba41 r-rjixqe r-bcqeeo r-bnwqim r-qvutc0"})
+    if type(tweet) == None:
+        continue
+    results.append(tweet.text)
+print(results)
 #HI
