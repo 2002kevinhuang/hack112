@@ -20,7 +20,7 @@ def appStarted(app):
     app.youtubeColors = ['#E68364'] * 6
     app.youtubeTextColors = ['black'] * 6
     # animations
-    app.r1, app.r2, app.r3 = 1, 1, 1
+    app.r1, app.r2, app.r3, app.r4 = 1, 1, 1, 1
     app.animateColors = ['white'] * 4
     app.headerColors = ['#6C7A89', '#22A7F0', '#E68364', '#D24D57']
 
@@ -98,6 +98,18 @@ def mouseMoved(app, event):
         app.animateColors[2] = ['white']
         app.r3 = 1
         app.headerColors[2] = '#E68364'
+
+    # youtube header animation
+    middle4 = app.width/4 * 3
+    height4 = app.height/2 + 30
+    if middle4-50 <= event.x <= middle4+50 and height4-20 <= event.y <= height4+20:
+        app.animateColors[3] = ['#FBCACA']
+        app.r4 = 27
+        app.headerColors[3] = 'black'
+    else:
+        app.animateColors[3] = ['white']
+        app.r4 = 1
+        app.headerColors[3] = '#D24D57'
 
     # reddit colors
     if 30 <= event.x <= 770 and 65 <= event.y <= 103:
@@ -227,6 +239,10 @@ def redrawAll(app, canvas):
     canvas.create_oval(vertical_divide / 2 - 2 * app.r3 - extra_margin, horizontal_divide + 30 - app.r3,
                        vertical_divide / 2 + 2 * app.r3 + extra_margin, horizontal_divide + 30 + app.r3, width=0,
                        fill=app.animateColors[2])
+    extra_margin2 = 27
+    canvas.create_oval(vertical_divide / 2 * 3 - 2 * app.r4 - extra_margin2, horizontal_divide + 30 - app.r4,
+                       vertical_divide / 2 * 3 + 2 * app.r4 + extra_margin2,
+                       horizontal_divide + 30 + app.r4, width=0, fill=app.animateColors[3])
     # section headers
     canvas.create_text(vertical_divide / 2, 30, text='Reddit', font=('Bold', '30'),
                        fill=app.headerColors[0])
