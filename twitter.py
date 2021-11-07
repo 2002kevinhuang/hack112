@@ -29,5 +29,6 @@ def scrapeTwitter():
             "class": "css-901oao css-bfa6kz r-9ilb82 r-18u37iz r-37j5jr r-a023e6 r-16dba41 r-rjixqe r-bcqeeo r-qvutc0"})
         if type(tweet) is None:
             continue
-        results.append([name.text, handle.text, tweet.text])
+        if [name.text, handle.text, tweet.text] not in results:
+            results.append([name.text, handle.text, tweet.text])
     return results
