@@ -48,11 +48,9 @@ def scrapeTwitter():
         
         if "/status/" in str(item):
             startUrl = str(item).index("/status/")
-            url = "https://twitter.com/" + handle.text[1:] + str(item)[startUrl:startUrl+28]
+            url = "https://twitter.com/" + handle.text[1:] + str(item)[startUrl:startUrl+27]
         else:
             continue
         #if ([name.text, handle.text, tweet.text, url]) not in results:
         results.append([name.text, handle.text, tweet.text, url])
-    print(len(results))
     return results
-

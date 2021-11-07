@@ -23,8 +23,14 @@ def scrapeReddit():
         # numUpvotes = upvotesClass.find("span",{"class":"D6SuXeSnAAagG8dKAb4O4"})
         sub = item.find("div", {"class": "_2mHuuvyV9doV3zwbZPtIPG"})
         op = item.find("a", {"class": "_2tbHP6ZydRpjI44J3syuqC"})
+        url = item.find("a",{"class":"SQnoC3ObvgnGjWt90zD9Z _2INHSNB8V5eaWp4P0rY_mE"})
+        url = str(url)
+        if "href=" in str(url):
+            startUrl = str(url).index("href=")
+            endUrl = str(url).index('\"',startUrl+6)
+            url = "https://reddit.com/" + str(url)[startUrl+7:endUrl-1]
         if (title is None or sub is None or op is None):
             break
         if [title.text, sub.text, op.text] not in results:
-            results.append([title.text, sub.text, op.text])
+            results.append([title.text, sub.text, op.text,url])
     return results
