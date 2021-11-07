@@ -29,8 +29,10 @@ def redrawAll(app, canvas):
     canvas.create_line(vertical_divide, 0, vertical_divide, app.height, width=2)
     canvas.create_line(0, horizontal_divide, app.width, horizontal_divide, width=2)
     # section headers
-    canvas.create_text(vertical_divide/2, 30, text='Reddit', font=('Bold', '30'))
-    canvas.create_text(vertical_divide/2 * 3, 30, text='Twitter', font=('Bold', '30'))
+    canvas.create_text(vertical_divide/2, 30, text='Reddit', font=('Bold', '30'),
+                       fill='#6C7A89', activefill='black')
+    canvas.create_text(vertical_divide/2 * 3, 30, text='Twitter', font=('Bold', '30'),
+                       fill='#22A7F0', activefill='#003171')
     # rectangles
     height, gap = 38, 15
     x, y = 30, 50
