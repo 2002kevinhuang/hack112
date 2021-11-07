@@ -14,7 +14,7 @@ def scrapeTwitter():
     print("Success")
     time.sleep(1.5)
     lenOfPage = driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
-    time.sleep(1.5)
+    time.sleep(4.5)
     html = BeautifulSoup(driver.page_source, "html.parser")
     result = html.find_all("div", {"class": "css-1dbjc4n r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l"})
     results = []

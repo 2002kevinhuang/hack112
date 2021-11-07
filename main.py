@@ -9,33 +9,15 @@ from twitter import *
 
 
 def appStarted(app):
-    app.reddit = scrapeReddit()
+    # app.reddit = scrapeReddit()
     app.redditColors = ['#6C7A89'] * 7
     # app.twitter = scrapeTwitter()
-    app.twitter = [['President Biden', '@POTUS',
-                    'Initial unemployment insurance claims are down by nearly two-thirds since when I took office. \n\nThis is real progress – and we’re not slowing down.'],
-                   ['President Biden', '@POTUS',
-                    'No one should have to choose between paying for lifesaving medication or putting food on the table.\n \nMy Build Back Better Framework will help lower prescription drug costs for Americans.'],
-                   ['Bill Gates', '@BillGates',
-                    'Getting to zero emissions will be the hardest thing people have ever done. This was a great conversation about the power of innovation and what the world can accomplish if we work together.'],
-                   ['Bill Gates', '@BillGates',
-                    'I was truly inspired to hear @Vinisha27738476 speak at #COP26 this week. Her optimism and passion for innovation makes me hopeful that we can avoid a climate disaster.'],
-                   ['President Biden', '@POTUS',
-                    'Today, the Labor Department issued its rule requiring COVID-19 vaccinations for companies with 100 or more employees and HHS released its rule to ensure that health care workers are vaccinated.\n \nTogether, they will cover about 100 million Americans and help us beat COVID-19.'],
-                   ['President Biden', '@POTUS',
-                    'May the light of Diwali remind us that from darkness there is knowledge, wisdom, and truth. From division, unity. From despair, hope.\n\nTo Hindus, Sikhs, Jains, and Buddhists celebrating in America and around the world — from the People’s House to yours, happy Diwali.'],
-                   ['President Biden', '@POTUS',
-                    'Please, get your kids vaccinated. It’s safe and effective — and the best way to put this pandemic behind us.'],
-                   ['Bill Gates', '@BillGates',
-                    'Thank you, @SecGranholm for your leadership. The commitment of @ENERGY and the innovate spirit of our National Labs will drive the breakthroughs we need to help the whole world get to #NetZero.'],
-                   ['President Biden', '@POTUS',
-                    'We have made incredible progress on COVID-19 over these past nine months.\n \nBut we have to keep going.\n \nSo please, do your part. Get vaccinated.'],
-                   ['Bill Gates', '@BillGates',
-                    'Public-private collaborations will be critical to reducing emissions and achieving our 2050 climate goals. Our work with @MICleanEnergyRD will help us do just that.'],
-                   ['Bill Gates', '@BillGates',
-                    'I’m excited about @Breakthrough Energy’s expanded work with @MICleanEnergyRD. Thank you, @JonathanWNV for your partnership.']]
-    app.twitterColors = []
-    app.twitterTextColors = []
+    app.twitterColors = ['#003171'] * 7
+    app.twitterTextColors = ['black'] * 7
+
+    # temporary patch to make runtime faster / revert before final version
+    app.reddit = [['Which film is the perfect comedy?', 'r/AskReddit', 'u/BlackmoreGrant'], ['We like thumb-wrestling with ourselves as much as anybody else, but the XP gains just hit different when you’re racking up wins across the expansive 7.6” edge-to-edge display of Galaxy Z Fold3 5G — perfectly sized for your pocket or purse so you can take your game to the next level wherever you go.', 'u/SamsungMobileUS', 'u/SamsungMobileUS'], ['DWG KIA vs. EDward Gaming / 2021 World Championship - Final / Post-Match Discussion', 'r/leagueoflegends', 'u/Soul_Sleepwhale'], ["My roommate cooks frozen pizzas without taking them off the cardboard. He says that's the proper way to cook them and I'm weird because I don't.", 'r/mildlyinfuriating', 'u/an_evil_eskimo'], ['I captured the Horsehead and Flame nebula with my home telescope.', 'r/space', 'u/chucksastro'], ['Are you vaccinated?', 'r/teenagers', 'u/pjanmaxxx'], ['[Highlight] Luka beats the Celtics at the Buzzer with a crazy three', 'r/nba', 'u/CP3_for_MvP'], ['Well?', 'r/gaming', 'u/nisebblumberg']]
+    app.twitter = [['Carnegie Mellon University', '@CarnegieMellon', "New research from @ProfGS_ and @FollowStevens's Jose E. Ramirez-Marquez  suggests that monitoring social media during hurricanes could help communities better plan for and mitigate the impacts of climate change. https://cmu.is/twitter-hurricanes…"], ['Bill Gates', '@BillGates', 'As we’ve seen this past year, new variants of a disease can emerge over time. In order to develop new tools to fight the disease, we need to identify those variants quickly. Dr. Senjuti Saha is one expert working to sequence SARS-CoV-2: https://b-gat.es/3kjGgYx'], ['President Biden', '@POTUS', 'We need to build an economy that gives working people a fair shot. We need to restore fairness to our tax code. We need to make long overdue investments in our infrastructure. We need to pass the Bipartisan Infrastructure Deal and my Build Back Better Agenda.'], ['SpaceX', '@SpaceX', 'Splashdown! Welcome back to planet Earth, @Inspiration4x!'], ['CMU Provost Office', '@CMUProvost', "Behind every great performance is inspiration, and behind that inspiration is a great teacher. That's why @CarnegieMellon is proud to be the exclusive higher ed partner of @TheTonyAwards. https://cmu.is/tonys-theatre\n\nTune into the #TonyAwards Sept. 26 on @CBS and @paramountplus."], ['SpaceX', '@SpaceX', 'Dragon has entered its last orbit before reentry and splashdown → http://spacex.com/launches'], ['Carnegie Mellon University', '@CarnegieMellon', 'CareLink provides an alternative option for finding help or a job and is a way for our Tartan community to connect, support one another, and embrace our shared talent. https://cmu.is/carelink'], ['SpaceX', '@SpaceX', 'Orbital moonrise'], ['President Biden', '@POTUS', 'My plan is very clear: we will not raise taxes on anyone making under $400,000 a year.\n \nIt’s only corporations and people making over $400,000 a year who will see their taxes go up.'], ['President Biden', '@POTUS', 'Big corporations and the super wealthy have to start paying their fair share.\n \nIt is long overdue.'], ['Carnegie Mellon University', '@CarnegieMellon', "Researchers from CMU and @OregonState on Team Explorer put autonomous robots to the test, developing tech to aid first responders in environments that are unsafe for humans.\n\nThey're competing in the final leg of the @DARPA #SubTChallenge.\n\nhttps://cmu.is/scs-subtchallenge… #TartanProud"], ['Carnegie Mellon University', '@CarnegieMellon', '"If you lead your life the right way, the karma will take care of itself. The dreams will come to you.”\n\nOn this day 14 years ago, only a few weeks after learning he had just months to live, CMU professor and alumnus Randy Pausch delivered what became known as "The Last Lecture."'], ['Elon Musk', '@elonmusk', 'Moving at ~23 times speed of sound, circling Earth every ~90 minutes'], ['AirLab', '@AirLabCMU', '#TeamExplorerSubt is packed and ready to go!']]
 
 
 def keyPressed(app, event):
@@ -74,14 +56,52 @@ def mouseMoved(app, event):
     else:
         app.redditColors[6] = '#95A5A6'
 
+    # twitter colors
+    if 830 <= event.x <= 1570 and 65 <= event.y <= 103:
+        app.twitterColors[0] = '#003171'
+        app.twitterTextColors[0] = 'white'
+    else:
+        app.twitterColors[0] = '#22A7F0'
+        app.twitterTextColors[0] = 'black'
+    if 830 <= event.x <= 1570 and 118 <= event.y <= 156:
+        app.twitterColors[1] = '#003171'
+        app.twitterTextColors[1] = 'white'
+    else:
+        app.twitterColors[1] = '#22A7F0'
+        app.twitterTextColors[1] = 'black'
+    if 830 <= event.x <= 1570 and 171 <= event.y <= 209:
+        app.twitterColors[2] = '#003171'
+        app.twitterTextColors[2] = 'white'
+    else:
+        app.twitterColors[2] = '#22A7F0'
+        app.twitterTextColors[2] = 'black'
+    if 830 <= event.x <= 1570 and 224 <= event.y <= 262:
+        app.twitterColors[3] = '#003171'
+        app.twitterTextColors[3] = 'white'
+    else:
+        app.twitterColors[3] = '#22A7F0'
+        app.twitterTextColors[3] = 'black'
+    if 830 <= event.x <= 1570 and 277 <= event.y <= 315:
+        app.twitterColors[4] = '#003171'
+        app.twitterTextColors[4] = 'white'
+    else:
+        app.twitterColors[4] = '#22A7F0'
+        app.twitterTextColors[4] = 'black'
+    if 830 <= event.x <= 1570 and 330 <= event.y <= 368:
+        app.twitterColors[5] = '#003171'
+        app.twitterTextColors[5] = 'white'
+    else:
+        app.twitterColors[5] = '#22A7F0'
+        app.twitterTextColors[5] = 'black'
+    if 830 <= event.x <= 1570 and 383 <= event.y <= 421:
+        app.twitterColors[6] = '#003171'
+        app.twitterTextColors[6] = 'white'
+    else:
+        app.twitterColors[6] = '#22A7F0'
+        app.twitterTextColors[6] = 'black'
+
 
 def redrawAll(app, canvas):
-    # reddit testing
-    # y, margin = 30, 0
-    # for line in app.reddit:
-    #     canvas.create_text(20, y + margin, text=line, anchor=tkinter.NW, width=app.width - 50)
-    #     margin += y
-    # canvas.create_text(20, 20, text=app.reddit, anchor=tkinter.NW, width=app.width-50)
     vertical_divide = app.width / 2
     horizontal_divide = app.height / 2
     # 4-section dividers
@@ -102,8 +122,7 @@ def redrawAll(app, canvas):
         canvas.create_rectangle(x, y + gap, vertical_divide - 30, y + height + gap, width=0, fill=app.redditColors[i])
         canvas.create_rectangle(170, y + gap, 200, y + height + gap, fill='white', width=0)  # used to be 200-230
         canvas.create_rectangle(vertical_divide + 30, y + gap, app.width - 30, y + height + gap, width=0,
-                                fill='#22A7F0',
-                                activefill='#003171', activewidth=10)
+                                fill=app.twitterColors[i])
         canvas.create_rectangle(vertical_divide + twitter_lengths[0] - 30, y + gap,
                                 vertical_divide + twitter_lengths[0], y + height + gap, fill='white', width=0)
         canvas.create_rectangle(vertical_divide + twitter_lengths[1] - 30, y + gap,
@@ -131,13 +150,14 @@ def redrawAll(app, canvas):
         if len(handle) > 10:
             handle = handle[:7].rstrip() + '...'
         tweet = app.twitter[i][2]
-        tweet_length = 67
+        tweet_length = 64
         if len(tweet) > tweet_length:
             tweet = tweet[:tweet_length - 3].rstrip() + '...'
-        canvas.create_text(845, reddit_text_locations[i], text=name, font='15', anchor=tkinter.W)
+        canvas.create_text(845, reddit_text_locations[i], text=name, font='15', anchor=tkinter.W,
+                           fill=app.twitterTextColors[i])
         canvas.create_text(800 + twitter_lengths[0] + 15, reddit_text_locations[i], text=handle, font='15',
-                           anchor=tkinter.W)
+                           anchor=tkinter.W, fill=app.twitterTextColors[i])
         canvas.create_text(800 + twitter_lengths[1] + 15, reddit_text_locations[i], text=tweet, font='15',
-                           anchor=tkinter.W)
+                           anchor=tkinter.W, fill=app.twitterTextColors[i])
 
 runApp(width=1600, height=900)

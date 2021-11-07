@@ -12,7 +12,7 @@ def scrapeReddit():
         print("Logging in")
     print("Success")
 
-    time.sleep(5)
+    #time.sleep(5)
     html = BeautifulSoup(driver.page_source, "html.parser")
     result = html.find_all("div", {"class": "_1oQyIsiPHYt6nx7VOmd1sz"})
     results = []
