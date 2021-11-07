@@ -40,7 +40,7 @@ def appStarted(app):
     # app.cursor_x, app.cursor_y = -1, -1
 
     # temporary patch to make runtime faster / revert before final version
-    if app.testing == 0:
+    if app.testing == 1:
         app.reddit = []
         app.twitter = []
         app.youtube = []
