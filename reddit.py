@@ -25,5 +25,3 @@ def scrapeReddit():
             break
         results.append([title.text,sub.text,op.text])
     return results
-
-print(scrapeReddit())
