@@ -13,8 +13,10 @@ def scrapeInsta():
         print("Logging in")
     print("Success")
     time.sleep(1)
-    lenOfPage = driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
+    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
     time.sleep(3)
+    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
+    time.sleep(2)
 
     html = BeautifulSoup(driver.page_source, "html.parser")
     result = html.find_all("div", {"class":"qF0y9 Igw0E IwRSH YBx95 _4EzTm"})
