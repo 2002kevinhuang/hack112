@@ -1,4 +1,9 @@
 import tkinter
+from urllib.request import urlopen
+
+from PIL import Image
+import requests
+from io import BytesIO
 import copy
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -21,6 +26,7 @@ def appStarted(app):
     # app.youtube = scrapeYoutube()
     app.youtubeColors = ['#E68364'] * 6
     app.youtubeTextColors = ['black'] * 6
+    # app.insta = scrapeInsta()
     # animations
     app.r1, app.r2, app.r3, app.r4 = 1, 1, 1, 1
     app.animateColors = ['white'] * 4
@@ -41,12 +47,40 @@ def appStarted(app):
     #app.youtube = scrapeYoutube()
     #app.insta = scrapeInsta()
     # thumbnails need to be loaded in appStarted
+    # youtube thumbnails
     app.thumbnails = []
     for i in range(6):
         thumbnail = app.youtube[i][2]
         app.thumbnails.append(thumbnail)
     app.images_temp = [app.loadImage(thumbnail) for thumbnail in app.thumbnails]
     app.images = [app.scaleImage(image, 0.1771) for image in app.images_temp]
+    # insta thumbnails
+    app.insta_thumbnails = []
+    app.insta_scales = []
+    app.posts = []
+    for i in range(3):
+        thumbnail = app.insta[i][2]
+        app.insta_thumbnails.append(thumbnail)
+
+        # gets scalar for images
+        # img = Image.open(thumbnail)
+        # tkimage = ImageTk.PhotoImage(img)
+        # h = tkimage.height()
+        # app.insta_scales.append(h)
+
+        # URL = "http://www.universeofsymbolism.com/images/ram-spirit-animal.jpg"
+        # u = urlopen(URL)
+        # raw_data = u.read()
+        # u.close()
+        #
+        # im = Image.open(BytesIO(raw_data))
+        # photo = ImageTk.PhotoImage(im)
+        # h = photo.height()
+        # app.insta_scales.append(h)
+
+    # app.images_temp2 = [app.loadImage(thumbnail) for thumbnail in app.insta_thumbnails]
+    # for i in range(3):
+    #     app.posts.append(app.scaleImage(app.images_temp2[i], app.insta_scales[i]))
 
 
 # initially used for testing / debugging
@@ -403,6 +437,10 @@ def redrawAll(app, canvas):
                                fill='black', anchor=NW, width=200)
         canvas.create_text(x+15, horizontal_divide+291.67+margin-shift+15, text=author,
                                 fill='black', anchor=NW, width=196.67)
+        # canvas.create_text(x+15, horizontal_divide+291.67+margin-shift+15, text=caption,
+        #                    fill='black', anchor=NW, width=266.67)
+        # canvas.create_text(x+15, horizontal_divide+291.67+margin-shift+35, text=caption,
+        #                         fill='black', anchor=NW)
 
     # custom cursor
     # canvas.create_oval(app.cursor_x-app.cursor_radius, app.cursor_y-app.cursor_radius,
