@@ -8,7 +8,7 @@ from reddit import *
 
 
 def appStarted(app):
-    app.reddit = scapeReddit()
+    app.reddit = scrapeReddit()
 
 
 def keyPressed(app, event):
