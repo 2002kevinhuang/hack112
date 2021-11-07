@@ -9,15 +9,18 @@ import time
 def appStarted(app):
     app.reddit = reddit()
 
+
 def keyPressed(app, event):
     print(app.reddit)
+
 
 def redrawAll(app, canvas):
     y, margin = 30, 0
     for line in app.reddit:
-        canvas.create_text(20, y+margin, text=line, anchor=tkinter.NW, width=app.width-50)
+        canvas.create_text(20, y + margin, text=line, anchor=tkinter.NW, width=app.width - 50)
         margin += y
     # canvas.create_text(20, 20, text=app.reddit, anchor=tkinter.NW, width=app.width-50)
+
 
 def reddit():
     driver = webdriver.Chrome("../hack112/chromedriver")
@@ -35,7 +38,8 @@ def reddit():
         results.append(item.text)
     return results
 
-print(reddit())
+
+# print(reddit())
 runApp(width=800, height=600)
 
 # This should work
