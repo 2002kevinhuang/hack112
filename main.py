@@ -124,8 +124,15 @@ def mousePressed(app,event):
                 for i in range(6):
                     thumbnail = app.youtube[i][2]
                     app.thumbnails.append(thumbnail)
+                    urllib.request.urlretrieve(f'{app.youtube[i][2]}',f"./images/yt{i}.png")    
+                    image = Image.open(f"../hack112/images/yt{i}.png")
+                    newSize = (227,128)
+                    im2 = image.resize(newSize) 
+                    im2.save(f"../hack112/images/yt{i}.png")
                 app.images_temp = [app.loadImage(thumbnail) for thumbnail in app.thumbnails]
                 app.images = [app.scaleImage(image, 0.1771) for image in app.images_temp]
+                
+                
         #return
     elif (820<event.x<1005):
         if(40<event.y<60):
@@ -184,6 +191,15 @@ def mousePressed(app,event):
             webbrowser.open(app.youtube[4][3])
         if 543.34 <= event.x <= 770 and 703 <= event.y <= 880.5:  # 6
             webbrowser.open(app.youtube[5][3])
+    
+    #Insta
+    if app.insta != []:
+        if 800+30 <= event.x <= 800+256.67 and 515 <= event.y <= 861.67:  # 1
+            webbrowser.open(app.insta[0][3])
+        if 800+286.67 <= event.x <= 800+513.34 and 515 <= event.y <= 861.67:  # 2
+            webbrowser.open(app.insta[1][3])
+        if 800+543.34 <= event.x <= 800+770 and 515 <= event.y <= 861.67:  # 3
+            webbrowser.open(app.insta[2][3])
 
 
 
@@ -464,12 +480,7 @@ def redrawAll(app, canvas):
     if app.youtube != []:
         vidnames = []
         for i in range(6):
-            urllib.request.urlretrieve(
-                f'{app.youtube[i][2]}',f"./images/yt{i}.png")    
-            image = Image.open(f"../hack112/images/yt{i}.png")
-            newSize = (227,128)
-            im2 = image.resize(newSize) 
-
+            im2 = Image.open(f"../hack112/images/yt{i}.png")
             vidname = app.youtube[i][0]
             max_vidname = 32
             if vidname.isupper():
