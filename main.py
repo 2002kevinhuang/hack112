@@ -20,7 +20,7 @@ from instagram import *
 
 
 def appStarted(app):
-    app.testing = 0
+    app.testing = 1
     # app.reddit = scrapeReddit()
     app.redditColors = ['#6C7A89'] * 7
     # app.twitter = scrapeTwitter()
@@ -29,6 +29,7 @@ def appStarted(app):
     # app.youtube = scrapeYoutube()
     app.youtubeColors = ['#E68364'] * 6
     app.youtubeTextColors = ['black'] * 6
+    app.instaColors = ['#ffe6e6'] * 3
     # app.insta = scrapeInsta()
     # animations
     app.r1, app.r2, app.r3, app.r4 = 1, 1, 1, 1
@@ -40,7 +41,7 @@ def appStarted(app):
     # app.cursor_x, app.cursor_y = -1, -1
 
     # temporary patch to make runtime faster / revert before final version
-    if app.testing == 1:
+    if app.testing == 0:
         app.reddit = []
         app.twitter = []
         app.youtube = []
@@ -229,7 +230,7 @@ def mouseMoved(app, event):
         app.r3 = 1
         app.headerColors[2] = '#E68364'
 
-    # youtube header animation
+    # twitter header animation
     middle4 = app.width/4 * 3
     height4 = app.height/2 + 30
     if middle4-50 <= event.x <= middle4+50 and height4-20 <= event.y <= height4+20:
@@ -240,6 +241,7 @@ def mouseMoved(app, event):
         app.animateColors[3] = ['white']
         app.r4 = 1
         app.headerColors[3] = '#D24D57'
+
 
     # reddit colors
     if 30 <= event.x <= 770 and 65 <= event.y <= 103:
@@ -352,6 +354,20 @@ def mouseMoved(app, event):
     else:
         app.youtubeColors[5] = '#E68364'
         app.youtubeTextColors[5] = 'black'
+
+    # insta colors      ffe6e6
+    if 800+30 <= event.x <= 800+256.67 and 515 <= event.y <= 861.67:  # 1
+        app.instaColors[0] = '#ffb3b3'
+    else:
+        app.instaColors[0] = '#ffe6e6'
+    if 800+286.67 <= event.x <= 800+513.34 and 515 <= event.y <= 861.67:  # 2
+        app.instaColors[1] = '#ffb3b3'
+    else:
+        app.instaColors[1] = '#ffe6e6'
+    if 800+543.34 <= event.x <= 800+770 and 515 <= event.y <= 861.67:  # 3
+        app.instaColors[2] = '#ffb3b3'
+    else:
+        app.instaColors[2] = '#ffe6e6'
 
 
 def redrawAll(app, canvas):
@@ -517,7 +533,7 @@ def redrawAll(app, canvas):
             #                        fill='grey', width=0)
             canvas.create_rectangle(x, horizontal_divide+291.67+margin-shift, x+insta_size,
                                     horizontal_divide+291.67+margin+90-shift,
-                                    fill='grey', width=0)  # 291.67 = 65 + 226.67
+                                    fill=app.instaColors[i], width=0)  # 291.67 = 65 + 226.67
             canvas.create_image(x+113, horizontal_divide+178-shift, image=ImageTk.PhotoImage(im2))
 
 
