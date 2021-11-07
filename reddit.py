@@ -25,5 +25,6 @@ def scrapeReddit():
         op = item.find("a", {"class": "_2tbHP6ZydRpjI44J3syuqC"})
         if (title is None or sub is None or op is None):
             break
-        results.append([title.text, sub.text, op.text])
+        if [title.text, sub.text, op.text] not in results:
+            results.append([title.text, sub.text, op.text])
     return results

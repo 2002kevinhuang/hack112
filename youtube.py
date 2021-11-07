@@ -29,5 +29,6 @@ def scrapeYoutube():
         if(title is None):
             break
         if len(str(thumbnail)) > 69:
-            results.append([title.text,creator.text,thumbnail,"https://www.youtube.com"+url])
+            if [title.text,creator.text,thumbnail,"https://www.youtube.com"+url] not in results:
+                results.append([title.text,creator.text,thumbnail,"https://www.youtube.com"+url])
     return results
