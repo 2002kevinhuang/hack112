@@ -9,22 +9,21 @@ driver.get(url)
 
 print(driver.current_url)
 
-while(driver.current_url != "https://twitter.com/home"):
+while (driver.current_url != "https://twitter.com/home"):
     print("Logging in")
 print("logged in")
 
 time.sleep(5)
-html =  BeautifulSoup(driver.page_source, "html.parser")
-result = html.find_all("div",{"class":"css-1dbjc4n r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l"})
+html = BeautifulSoup(driver.page_source, "html.parser")
+result = html.find_all("div", {"class": "css-1dbjc4n r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l"})
 results = []
 for item in result:
-    tweet = item.find("div",{"class":"css-901oao r-1fmj7o5 r-37j5jr r-a023e6 r-16dba41 r-rjixqe r-bcqeeo r-bnwqim r-qvutc0"})
-    name = item.find("span",{"class":"css-901oao css-16my406 css-bfa6kz r-poiln3 r-bcqeeo r-qvutc0"})
-    handle = item.find("div",{"class":"css-901oao css-bfa6kz r-9ilb82 r-18u37iz r-37j5jr r-a023e6 r-16dba41 r-rjixqe r-bcqeeo r-qvutc0"})
+    tweet = item.find("div",
+                      {"class": "css-901oao r-1fmj7o5 r-37j5jr r-a023e6 r-16dba41 r-rjixqe r-bcqeeo r-bnwqim r-qvutc0"})
+    name = item.find("span", {"class": "css-901oao css-16my406 css-bfa6kz r-poiln3 r-bcqeeo r-qvutc0"})
+    handle = item.find("div", {
+        "class": "css-901oao css-bfa6kz r-9ilb82 r-18u37iz r-37j5jr r-a023e6 r-16dba41 r-rjixqe r-bcqeeo r-qvutc0"})
     if type(tweet) is None:
         continue
-    #print(tweet.text)
-    #print(name.text)
-    #print(handle.text)
-    results.append([name.text,handle.text,tweet.text])
+    results.append([name.text, handle.text, tweet.text])
 print(results)
