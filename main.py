@@ -8,12 +8,12 @@ from reddit import *
 
 
 def appStarted(app):
-    # app.reddit = scrapeReddit()
+    app.reddit = scrapeReddit()
     app.test = []
 
 
-# def keyPressed(app, event):
-    # print(app.reddit)
+def keyPressed(app, event):
+    print(app.reddit)
 
 
 def redrawAll(app, canvas):
@@ -36,19 +36,32 @@ def redrawAll(app, canvas):
     # rectangles
     height, gap = 38, 15
     x, y = 30, 50
+    reddit_text_locations = []
     while y + height < horizontal_divide-20:
         # canvas.create_rectangle(x, y+gap, 200, y+height+gap, width=0, fill='#D2D7D3',
         #                         activefill='#95A5A6', activewidth=10)
         # canvas.create_rectangle(230, y+gap, vertical_divide-30, y+height+gap)
         canvas.create_rectangle(x, y+gap, vertical_divide-30, y+height+gap, width=0, fill='#D2D7D3',
                                 activefill='#95A5A6', activewidth=10)
-        canvas.create_rectangle(200, y+gap, 230, y+height+gap, fill='white', width=0)
+        canvas.create_rectangle(170, y+gap, 200, y+height+gap, fill='white', width=0) # used to be 200-230
         canvas.create_rectangle(vertical_divide+30, y+gap, app.width-30, y+height+gap, width=0, fill='#22A7F0',
                                 activefill='#003171', activewidth=10)
         canvas.create_rectangle(vertical_divide+200, y+gap, vertical_divide+230, y+height+gap, fill='white', width=0)
         canvas.create_rectangle(vertical_divide+350, y+gap, vertical_divide+380, y+height+gap, fill='white', width=0)
+        reddit_text_locations.append((y+gap+y+height+gap)/2)
         y += height + gap
-        # 200 to 230, 350 to 380
+
+    for i in range(7):
+        sub = app.reddit[i][1]
+        if len(sub) > 17:
+            sub = sub[:14].rstrip() + '...'
+        title = app.reddit[i][0]
+        max_title = 85
+        if len(title) > max_title:
+            title = title[:max_title-3].rstrip() + '...'
+        canvas.create_text(45, reddit_text_locations[i], text=sub, font='15', anchor=tkinter.W)
+        canvas.create_text(215, reddit_text_locations[i], text=title, font='15', anchor=tkinter.W)
+
 
 # print(reddit())
 runApp(width=1600, height=900)
