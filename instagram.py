@@ -14,13 +14,14 @@ def scrapeInsta():
     print("Success")
     time.sleep(1)
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
-    time.sleep(3)
-    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
-    time.sleep(2)
+    #time.sleep(3)
+    #driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
+    #time.sleep(2)
 
     html = BeautifulSoup(driver.page_source, "html.parser")
     result = html.find_all("div", {"class":"qF0y9 Igw0E IwRSH YBx95 _4EzTm"})
     results = []
+    print(len(result))
     for item in result:
         if str(item) == "None":
             continue
@@ -46,6 +47,6 @@ def scrapeInsta():
         image = image.replace("amp;", "")
 
         
-        results.append([author.text,caption.text,image,url])
+        results.append(["@"+author.text,caption.text,image,url])
 
     return results
