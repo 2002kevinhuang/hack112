@@ -14,6 +14,9 @@ def appStarted(app):
     # app.twitter = scrapeTwitter()
     app.twitterColors = ['#003171'] * 7
     app.twitterTextColors = ['black'] * 7
+    # animations
+    app.r1, app.r2 = 1, 1
+    app.animateColors = ['white'] * 4
 
     # temporary patch to make runtime faster / revert before final version
     app.reddit = [['Which film is the perfect comedy?', 'r/AskReddit', 'u/BlackmoreGrant'], ['We like thumb-wrestling with ourselves as much as anybody else, but the XP gains just hit different when you’re racking up wins across the expansive 7.6” edge-to-edge display of Galaxy Z Fold3 5G — perfectly sized for your pocket or purse so you can take your game to the next level wherever you go.', 'u/SamsungMobileUS', 'u/SamsungMobileUS'], ['DWG KIA vs. EDward Gaming / 2021 World Championship - Final / Post-Match Discussion', 'r/leagueoflegends', 'u/Soul_Sleepwhale'], ["My roommate cooks frozen pizzas without taking them off the cardboard. He says that's the proper way to cook them and I'm weird because I don't.", 'r/mildlyinfuriating', 'u/an_evil_eskimo'], ['I captured the Horsehead and Flame nebula with my home telescope.', 'r/space', 'u/chucksastro'], ['Are you vaccinated?', 'r/teenagers', 'u/pjanmaxxx'], ['[Highlight] Luka beats the Celtics at the Buzzer with a crazy three', 'r/nba', 'u/CP3_for_MvP'], ['Well?', 'r/gaming', 'u/nisebblumberg']]
@@ -25,7 +28,37 @@ def keyPressed(app, event):
     # useless for now
 
 
+# animation too slow because CMU graphics limited to 10 fps
+# def timerFired(app):
+#     if app.animateColors[0] != ['white']:
+#         if app.r1 <= 30:
+#             app.r1 += 5
+#     else:
+#         app.r1 = 1
+
+
 def mouseMoved(app, event):
+    # reddit header animation
+    middle = app.width/4
+    height = 30
+    if middle-50 <= event.x <= middle+50 and height-20 <= event.y <= height+20:
+        app.animateColors[0] = ['#BFBFBF']
+        app.r1 = 27
+    else:
+        app.animateColors[0] = ['white']
+        app.r1 = 1
+
+    # twitter header animation
+    middle2 = app.width/4 * 3
+    height2 = 30
+    if middle2-50 <= event.x <= middle2+50 and height2-20 <= event.y <= height2+20:
+        app.animateColors[1] = ['#003171']
+        app.r2 = 27
+    else:
+        app.animateColors[1] = ['white']
+        app.r2 = 1
+
+
     # reddit colors
     if 30 <= event.x <= 770 and 65 <= event.y <= 103:
         app.redditColors[0] = '#6C7A89'
@@ -107,11 +140,16 @@ def redrawAll(app, canvas):
     # 4-section dividers
     canvas.create_line(vertical_divide, 0, vertical_divide, app.height, width=2)
     canvas.create_line(0, horizontal_divide, app.width, horizontal_divide, width=2)
+    # animated circles
+    canvas.create_oval(vertical_divide / 2 - 2 * app.r1, 30 - app.r1, vertical_divide / 2 + 2 * app.r1,
+                       30 + app.r1, width=0, fill=app.animateColors[0])
+    canvas.create_oval(vertical_divide / 2 * 3 - 2 * app.r2, 30 - app.r2, vertical_divide / 2 * 3 + 2 * app.r2,
+                       30 + app.r2, width=0, fill=app.animateColors[1])
     # section headers
     canvas.create_text(vertical_divide / 2, 30, text='Reddit', font=('Bold', '30'),
                        fill='#6C7A89', activefill='black')
     canvas.create_text(vertical_divide / 2 * 3, 30, text='Twitter', font=('Bold', '30'),
-                       fill='#22A7F0', activefill='#003171')
+                       fill='#22A7F0', activefill='white')
     # rectangles
     height, gap = 38, 15
     x, y = 30, 50
