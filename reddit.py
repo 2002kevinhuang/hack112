@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import time
 
-def reddit():
+def scapeReddit():
     driver = webdriver.Chrome("../hack112/chromedriver")
     url = 'https://www.reddit.com/'
     driver.get(url)

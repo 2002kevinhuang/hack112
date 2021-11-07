@@ -4,11 +4,11 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from cmu_112_graphics import *
 import time
-from test import *
+from reddit import *
 
 
 def appStarted(app):
-    app.reddit = reddit()
+    app.reddit = scapeReddit()
 
 
 def keyPressed(app, event):
