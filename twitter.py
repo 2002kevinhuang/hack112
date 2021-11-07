@@ -13,12 +13,17 @@ def scrapeTwitter():
     while (driver.current_url != "https://twitter.com/home"):
         print("Logging in")
     print("Success")
-    time.sleep(1.5)
-    lenOfPage = driver.execute_script(
+    time.sleep(3)
+    driver.execute_script(
         "window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
-    time.sleep(4.5)
     html = BeautifulSoup(driver.page_source, "html.parser")
+    time.sleep(3)
     result = html.find_all("div", {"class": "css-1dbjc4n r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l"})
+    driver.execute_script(
+        "window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
+    time.sleep(1.5)
+    result += html.find_all("div", {"class": "css-1dbjc4n r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l"})
+    print(len(result))
     results = []
     result = list(filter(None, result))
     for item in result:
@@ -35,7 +40,10 @@ def scrapeTwitter():
         
         startUrl = str(item).index("/status/")
         url = "https://twitter.com/" + handle.text[1:] + str(item)[startUrl:startUrl+28]
-        if [name.text, handle.text, tweet.text, url] not in results:
-            results.append([name.text, handle.text, tweet.text, url])
+
+        #if ([name.text, handle.text, tweet.text, url]) not in results:
+        results.append([name.text, handle.text, tweet.text, url])
+
     return results
+
 
