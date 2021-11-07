@@ -45,7 +45,6 @@ def scrapeInsta():
         image = str(image)[srcIndex+5:endOfLink]
         image = image.replace("amp;", "")
 
-        
         results.append([author.text,caption.text,image,url])
 
     return results

@@ -1,4 +1,9 @@
 import tkinter
+from urllib.request import urlopen
+
+from PIL import Image
+import requests
+from io import BytesIO
 import copy
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -8,6 +13,7 @@ import time
 from reddit import *
 from twitter import *
 from youtube import *
+from instagram import *
 
 
 def appStarted(app):
@@ -19,6 +25,7 @@ def appStarted(app):
     # app.youtube = scrapeYoutube()
     app.youtubeColors = ['#E68364'] * 6
     app.youtubeTextColors = ['black'] * 6
+    # app.insta = scrapeInsta()
     # animations
     app.r1, app.r2, app.r3, app.r4 = 1, 1, 1, 1
     app.animateColors = ['white'] * 4
@@ -33,14 +40,43 @@ def appStarted(app):
     app.reddit = [['Which film is the perfect comedy?', 'r/AskReddit', 'u/BlackmoreGrant'], ['We like thumb-wrestling with ourselves as much as anybody else, but the XP gains just hit different when you’re racking up wins across the expansive 7.6” edge-to-edge display of Galaxy Z Fold3 5G — perfectly sized for your pocket or purse so you can take your game to the next level wherever you go.', 'u/SamsungMobileUS', 'u/SamsungMobileUS'], ['DWG KIA vs. EDward Gaming / 2021 World Championship - Final / Post-Match Discussion', 'r/leagueoflegends', 'u/Soul_Sleepwhale'], ["My roommate cooks frozen pizzas without taking them off the cardboard. He says that's the proper way to cook them and I'm weird because I don't.", 'r/mildlyinfuriating', 'u/an_evil_eskimo'], ['I captured the Horsehead and Flame nebula with my home telescope.', 'r/space', 'u/chucksastro'], ['Are you vaccinated?', 'r/teenagers', 'u/pjanmaxxx'], ['[Highlight] Luka beats the Celtics at the Buzzer with a crazy three', 'r/nba', 'u/CP3_for_MvP'], ['Well?', 'r/gaming', 'u/nisebblumberg']]
     app.twitter = [['Carnegie Mellon University', '@CarnegieMellon', "New research from @ProfGS_ and @FollowStevens's Jose E. Ramirez-Marquez  suggests that monitoring social media during hurricanes could help communities better plan for and mitigate the impacts of climate change. https://cmu.is/twitter-hurricanes…"], ['Bill Gates', '@BillGates', 'As we’ve seen this past year, new variants of a disease can emerge over time. In order to develop new tools to fight the disease, we need to identify those variants quickly. Dr. Senjuti Saha is one expert working to sequence SARS-CoV-2: https://b-gat.es/3kjGgYx'], ['President Biden', '@POTUS', 'We need to build an economy that gives working people a fair shot. We need to restore fairness to our tax code. We need to make long overdue investments in our infrastructure. We need to pass the Bipartisan Infrastructure Deal and my Build Back Better Agenda.'], ['SpaceX', '@SpaceX', 'Splashdown! Welcome back to planet Earth, @Inspiration4x!'], ['CMU Provost Office', '@CMUProvost', "Behind every great performance is inspiration, and behind that inspiration is a great teacher. That's why @CarnegieMellon is proud to be the exclusive higher ed partner of @TheTonyAwards. https://cmu.is/tonys-theatre\n\nTune into the #TonyAwards Sept. 26 on @CBS and @paramountplus."], ['SpaceX', '@SpaceX', 'Dragon has entered its last orbit before reentry and splashdown → http://spacex.com/launches'], ['Carnegie Mellon University', '@CarnegieMellon', 'CareLink provides an alternative option for finding help or a job and is a way for our Tartan community to connect, support one another, and embrace our shared talent. https://cmu.is/carelink'], ['SpaceX', '@SpaceX', 'Orbital moonrise'], ['President Biden', '@POTUS', 'My plan is very clear: we will not raise taxes on anyone making under $400,000 a year.\n \nIt’s only corporations and people making over $400,000 a year who will see their taxes go up.'], ['President Biden', '@POTUS', 'Big corporations and the super wealthy have to start paying their fair share.\n \nIt is long overdue.'], ['Carnegie Mellon University', '@CarnegieMellon', "Researchers from CMU and @OregonState on Team Explorer put autonomous robots to the test, developing tech to aid first responders in environments that are unsafe for humans.\n\nThey're competing in the final leg of the @DARPA #SubTChallenge.\n\nhttps://cmu.is/scs-subtchallenge… #TartanProud"], ['Carnegie Mellon University', '@CarnegieMellon', '"If you lead your life the right way, the karma will take care of itself. The dreams will come to you.”\n\nOn this day 14 years ago, only a few weeks after learning he had just months to live, CMU professor and alumnus Randy Pausch delivered what became known as "The Last Lecture."'], ['Elon Musk', '@elonmusk', 'Moving at ~23 times speed of sound, circling Earth every ~90 minutes'], ['AirLab', '@AirLabCMU', '#TeamExplorerSubt is packed and ready to go!']]
     app.youtube = [['Squid Game - SNL', 'Saturday Night Live', 'https://i.ytimg.com/vi/vWdHPMhy270/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&amp;rs=AOn4CLBRjFFWOF4SZJsLnqyNkPmJnuo0rQ', 'https://www.youtube.com/watch?v=vWdHPMhy270'], ['Guy Pulls Out Sign on Gophers Kiss Cam', 'Minnesota Gophers', 'https://i.ytimg.com/vi/MyfYodavAj8/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&amp;rs=AOn4CLAjlco_UAvXpcWwjr-D7m0t51UShA', 'https://www.youtube.com/watch?v=MyfYodavAj8'], ['Pokemon but the World Champion controls the AI', 'SmallAnt', 'https://i.ytimg.com/vi/QTxoDSAe7yw/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&amp;rs=AOn4CLDkakXcqJfsbcSJuR3_rBTVVgpWdg', 'https://www.youtube.com/watch?v=QTxoDSAe7yw'], ['Risk', 'Telepurte', 'https://i.ytimg.com/vi/wqJAMFH1pqA/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&amp;rs=AOn4CLCz84OzpAXg2EVv4UnRhss8iDm2PQ', 'https://www.youtube.com/watch?v=wqJAMFH1pqA'], ['Liquid Venom Suit Covers My Whole Body!', 'JLaservideo', 'https://i.ytimg.com/vi/8Xfz09IJTYY/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&amp;rs=AOn4CLDeYPHOZLEFExj9NnQgOsLzHmzTgg', 'https://www.youtube.com/watch?v=8Xfz09IJTYY'], ['20 FUNNY MOMENTS WITH REPORTERS IN SPORTS', 'SportsPro', 'https://i.ytimg.com/vi/QIwA0TG5Oho/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&amp;rs=AOn4CLCa-6F6xJBLo_hyyDgiUhswSZ2GJw', 'https://www.youtube.com/watch?v=QIwA0TG5Oho'], ['What Happens After 30 Days of Cold Showers', 'Gravity Transformation - Fat Loss Experts', 'https://i.ytimg.com/vi/nOuzSOnfyv0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&amp;rs=AOn4CLDSJ2N96Kycf79EswUBvuuZi8DStA', 'https://www.youtube.com/watch?v=nOuzSOnfyv0'], ['Teenagers Trapped Inside A Cave For 1000 Years, But They Still Never Aged', 'Scifi Recapped', 'https://i.ytimg.com/vi/26eD2jw7sSk/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&amp;rs=AOn4CLCR1aTSS-rueiwUh7JTWOigwQVqnw', 'https://www.youtube.com/watch?v=26eD2jw7sSk'], ['Snoop Dogg Realizes He Left His Stream Live for 8 hours+', "ghecco's twitch clips", 'https://i.ytimg.com/vi/TAOM449H6Y8/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&amp;rs=AOn4CLBmKARVe3c82tet3dfRURDJZ-uCxA', 'https://www.youtube.com/watch?v=TAOM449H6Y8'], ['Facebook Is Dead', 'penguinz0', 'https://i.ytimg.com/vi/fdMil7y4Vk4/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&amp;rs=AOn4CLA8l2DGHNGDrWUdm6dqj2ZLP6UnTA', 'https://www.youtube.com/watch?v=fdMil7y4Vk4'], ['What Does it Actually Feel Like to be Shot', 'The Infographics Show', 'https://i.ytimg.com/vi/BmwVxj6E2KE/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&amp;rs=AOn4CLA-Z8U7oHyeQy7zGS1Nh9wv0Ov6Zg', 'https://www.youtube.com/watch?v=BmwVxj6E2KE'], ['Conservative Covid-19 survivor is now getting vaccinated but losing friends', 'CNN', 'https://i.ytimg.com/vi/X1DL53cVJd0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&amp;rs=AOn4CLAsqm9i1DCcTiFyvee8JyI4hyhwWA', 'https://www.youtube.com/watch?v=X1DL53cVJd0'], ['Companies face religious exemption requests for COVID-19 vaccine', 'CBS News', 'https://i.ytimg.com/vi/qwY24i9Z1XE/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&amp;rs=AOn4CLA-CccOgrpo0O0pd-68lxzsSt6Ohg', 'https://www.youtube.com/watch?v=qwY24i9Z1XE'], ['Reacting to Aaron Rodgers opening up on positive COVID-19 test and vaccination status | This Just In', 'ESPN', 'https://i.ytimg.com/vi/QADmWcbEytI/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&amp;rs=AOn4CLCnaY4okf3h5yIp76nGLP22gmDciA', 'https://www.youtube.com/watch?v=QADmWcbEytI'], ['Businesses have until after the holidays to implement Biden Covid vaccine mandate', 'CNBC Television', 'https://i.ytimg.com/vi/-sd-gZz04F8/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&amp;rs=AOn4CLDkIcAGH4ww0vRygTTIw8tDzB-cWg', 'https://www.youtube.com/watch?v=-sd-gZz04F8']]
+    app.insta = [['@nflthrowbackandnfl', 'Anyone else miss watching Patrick Willis? ...more', 'https://instagram.fagc2-1.fna.fbcdn.net/v/t51.2885-15/e35/252697993_211415267789670_8098226689732028879_n.jpg?_nc_ht=instagram.fagc2-1.fna.fbcdn.net&_nc_cat=1&_nc_ohc=KhNsTKcAuqUAX-Inqd7&edm=AIQHJ4wBAAAA&ccb=7-4&oh=21b5c84e7f3337c353129a79c67d620e&oe=618DE091&_nc_sid=7b02f1&ig_cache_key=MjcwMTM0NjM3ODcwMDgxNTU1NQ%3D%3D.2-ccb7-4', 'https://www.instagram.com/p/CV9HDj7vqIT/'], ['@teamkanyedaily', 'Highlights from @dondasports first game courtesy of @overtime & @overtimemikey. ...\xa0more', 'https://instagram.fagc2-1.fna.fbcdn.net/v/t51.2885-15/e35/254553343_1863873687151968_8755173896503738110_n.jpg?_nc_ht=instagram.fagc2-1.fna.fbcdn.net&_nc_cat=1&_nc_ohc=AoPd2aD5ZE8AX-jwa9T&edm=AIQHJ4wBAAAA&ccb=7-4&oh=552405e5abe0149f2c9fd4c730f94d84&oe=618E7F83&_nc_sid=7b02f1&ig_cache_key=MjcwMTQ0NTE1NDg2MDk0MDYzMw%3D%3D.2-ccb7-4', 'https://www.instagram.com/p/CV9dg7YrhWU/'], ['@middleclassfancy', 'I don’t know what to do with this information. Tacky sweaters available at the link in bio 🍻', 'https://instagram.fagc2-1.fna.fbcdn.net/v/t51.2885-15/e35/252966819_264710662296207_6096271533021232193_n.jpg?_nc_ht=instagram.fagc2-1.fna.fbcdn.net&_nc_cat=1&_nc_ohc=4vTS8aY8X7kAX-J6ewM&edm=AIQHJ4wBAAAA&ccb=7-4&oh=89bead24c4b62ca6bd77da2fddee652e&oe=618E881C&_nc_sid=7b02f1&ig_cache_key=MjcwMTM1ODMzOTQyMDE2NjAxMQ%3D%3D.2-ccb7-4', 'https://www.instagram.com/p/CV9JxpgL6o3/'], ['@nfl', 'Still in awe of Younghoe Koo doing this 😦...\xa0more', 'https://instagram.fagc2-1.fna.fbcdn.net/v/t51.2885-15/fr/e15/s1080x1080/252749757_436578881187975_3515494504537180782_n.jpg?_nc_ht=instagram.fagc2-1.fna.fbcdn.net&_nc_cat=1&_nc_ohc=uVfW8UMrjAUAX-S37T_&edm=AIQHJ4wBAAAA&ccb=7-4&oh=6cfba8b1e119876f4a0c2a46d3274b6d&oe=618F0C94&_nc_sid=7b02f1&ig_cache_key=MjcwMTIzMzc1MzYxMDQ4NjA1Nw%3D%3D.2-ccb7-4', 'https://www.instagram.com/p/CV8tcpnvliG/'], ['@shithole', 'Fit check', 'https://instagram.fagc2-1.fna.fbcdn.net/v/t51.2885-15/e35/252771487_609089230282568_8430562557066216568_n.jpg?_nc_ht=instagram.fagc2-1.fna.fbcdn.net&_nc_cat=1&_nc_ohc=IwcTYP11FLMAX8uQiOJ&edm=AIQHJ4wBAAAA&ccb=7-4&oh=897001243e60430714ed6e2fc5f3ae81&oe=618F5811&_nc_sid=7b02f1&ig_cache_key=MjcwMTM2NTQ4NDEzOTgzNzY1MQ%3D%3D.2-ccb7-4', 'https://www.instagram.com/p/CV9LZlJpaDE/']]
 
     # thumbnails need to be loaded in appStarted
+    # youtube thumbnails
     app.thumbnails = []
     for i in range(6):
         thumbnail = app.youtube[i][2]
         app.thumbnails.append(thumbnail)
     app.images_temp = [app.loadImage(thumbnail) for thumbnail in app.thumbnails]
     app.images = [app.scaleImage(image, 0.1771) for image in app.images_temp]
+    # insta thumbnails
+    app.insta_thumbnails = []
+    app.insta_scales = []
+    app.posts = []
+    for i in range(3):
+        thumbnail = app.insta[i][2]
+        app.insta_thumbnails.append(thumbnail)
+
+        # gets scalar for images
+        # img = Image.open(thumbnail)
+        # tkimage = ImageTk.PhotoImage(img)
+        # h = tkimage.height()
+        # app.insta_scales.append(h)
+
+        # URL = "http://www.universeofsymbolism.com/images/ram-spirit-animal.jpg"
+        # u = urlopen(URL)
+        # raw_data = u.read()
+        # u.close()
+        #
+        # im = Image.open(BytesIO(raw_data))
+        # photo = ImageTk.PhotoImage(im)
+        # h = photo.height()
+        # app.insta_scales.append(h)
+
+    # app.images_temp2 = [app.loadImage(thumbnail) for thumbnail in app.insta_thumbnails]
+    # for i in range(3):
+    #     app.posts.append(app.scaleImage(app.images_temp2[i], app.insta_scales[i]))
 
 
 # initially used for testing / debugging
@@ -363,9 +399,39 @@ def redrawAll(app, canvas):
         canvas.create_rectangle(x, horizontal_divide+65-shift, x+insta_size,
                                 horizontal_divide+65+insta_size-shift,
                                 fill='grey', width=0)
+        # canvas.create_image(x, horizontal_divide+65-shift, image=ImageTk.PhotoImage(app.posts[i]),
+        #                     anchor=tkinter.NW)
+        # caption rectangle
         canvas.create_rectangle(x, horizontal_divide+291.67+margin-shift, x+insta_size,
                                 horizontal_divide+291.67+margin+90-shift,
                                 fill='grey', width=0)  # 291.67 = 65 + 226.67
+        # captions
+        author = app.insta[i][0]
+        caption = app.insta[i][1].replace('\xa0', '')
+        cutoff = 30
+        if len(caption) > cutoff * 2:
+            first = caption[:cutoff] + '-'
+            second = caption[cutoff:cutoff*2-3] + '...'
+            canvas.create_text(x+15, horizontal_divide+291.67+margin-shift+35, text=first,
+                               fill='black', anchor=NW)
+            canvas.create_text(x+15, horizontal_divide+291.67+margin-shift+55, text=second,
+                               fill='black', anchor=NW)
+        elif len(caption) > cutoff:
+            first = caption[:cutoff] + '-'
+            second = caption[cutoff:]
+            canvas.create_text(x+15, horizontal_divide+291.67+margin-shift+35, text=first,
+                               fill='black', anchor=NW)
+            canvas.create_text(x+15, horizontal_divide+291.67+margin-shift+55, text=second,
+                               fill='black', anchor=NW)
+        else:
+            canvas.create_text(x+15, horizontal_divide+291.67+margin-shift+35, text=caption,
+                               fill='black', anchor=NW, width=200)
+        canvas.create_text(x+15, horizontal_divide+291.67+margin-shift+15, text=author,
+                                fill='black', anchor=NW, width=196.67)
+        # canvas.create_text(x+15, horizontal_divide+291.67+margin-shift+15, text=caption,
+        #                    fill='black', anchor=NW, width=266.67)
+        # canvas.create_text(x+15, horizontal_divide+291.67+margin-shift+35, text=caption,
+        #                         fill='black', anchor=NW)
 
     # custom cursor
     # canvas.create_oval(app.cursor_x-app.cursor_radius, app.cursor_y-app.cursor_radius,
