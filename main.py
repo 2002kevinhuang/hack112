@@ -352,6 +352,21 @@ def redrawAll(app, canvas):
         canvas.create_text(x+10, (horizontal_divide+387.5+margin-shift)+32,
                            text=creator, font='5', fill=app.youtubeTextColors[i+3], anchor=tkinter.W)
 
+    # instagram
+
+    for i in range(3):
+        # testing instagram box sizes
+        insta_size = 226.67
+        shift, margin = -5, 25
+        temp_x = [x+vertical_divide for x in [30, 30+insta_size+30, 30+2*(insta_size+30)]]
+        x = temp_x[i]
+        canvas.create_rectangle(x, horizontal_divide+65-shift, x+insta_size,
+                                horizontal_divide+65+insta_size-shift,
+                                fill='grey', width=0)
+        canvas.create_rectangle(x, horizontal_divide+291.67+margin-shift, x+insta_size,
+                                horizontal_divide+291.67+margin+90-shift,
+                                fill='grey', width=0)  # 291.67 = 65 + 226.67
+
     # custom cursor
     # canvas.create_oval(app.cursor_x-app.cursor_radius, app.cursor_y-app.cursor_radius,
     #                    app.cursor_x+app.cursor_radius, app.cursor_y+app.cursor_radius, fill=app.cursor_fill,
