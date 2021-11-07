@@ -22,7 +22,9 @@ def scrapeInsta():
     result = html.find_all("div", {"class":"qF0y9 Igw0E IwRSH YBx95 _4EzTm"})
     results = []
     print(len(result))
+    count = 0
     for item in result:
+        count+=1
         if str(item) == "None":
             continue
         caption = item.find("span",
@@ -45,8 +47,6 @@ def scrapeInsta():
         endOfLink = str(image).find("\"", srcIndex+6)
         image = str(image)[srcIndex+5:endOfLink]
         image = image.replace("amp;", "")
-
-        
         results.append(["@"+author.text,caption.text,image,url])
-
     return results
+

@@ -13,19 +13,27 @@ def scrapeTwitter():
     while (driver.current_url != "https://twitter.com/home"):
         print("Logging in")
     print("Success")
-    time.sleep(3)
+    
+    result = set()
+    time.sleep(2)
     driver.execute_script(
         "window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
     html = BeautifulSoup(driver.page_source, "html.parser")
     time.sleep(3)
-    result = html.find_all("div", {"class": "css-1dbjc4n r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l"})
+    result.update(html.find_all("div", {"class": "css-1dbjc4n r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l"}))
     driver.execute_script(
         "window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
+    html = BeautifulSoup(driver.page_source, "html.parser")
+    result.update(html.find_all("div", {"class": "css-1dbjc4n r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l"}))
     time.sleep(1.5)
-    result += html.find_all("div", {"class": "css-1dbjc4n r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l"})
+    html = BeautifulSoup(driver.page_source, "html.parser")
+    result.update(html.find_all("div", {"class": "css-1dbjc4n r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l"}))
+    print(result)
     print(len(result))
     results = []
-    result = list(filter(None, result))
+    result = list(result)
+    print(result)
+    print(len(result))
     for item in result:
         if str(item) == "None":
             continue
@@ -35,15 +43,16 @@ def scrapeTwitter():
         name = item.find("span", {"class": "css-901oao css-16my406 css-bfa6kz r-poiln3 r-bcqeeo r-qvutc0"})
         handle = item.find("div", {
             "class": "css-901oao css-bfa6kz r-9ilb82 r-18u37iz r-37j5jr r-a023e6 r-16dba41 r-rjixqe r-bcqeeo r-qvutc0"})
-        if type(tweet) is None:
+        if tweet is None or name is None or handle is None:
             continue
         
-        startUrl = str(item).index("/status/")
-        url = "https://twitter.com/" + handle.text[1:] + str(item)[startUrl:startUrl+28]
-
+        if "/status/" in str(item):
+            startUrl = str(item).index("/status/")
+            url = "https://twitter.com/" + handle.text[1:] + str(item)[startUrl:startUrl+28]
+        else:
+            continue
         #if ([name.text, handle.text, tweet.text, url]) not in results:
         results.append([name.text, handle.text, tweet.text, url])
-
+    print(len(results))
     return results
-
 
