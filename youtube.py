@@ -12,9 +12,11 @@ def scrapeYoutube():
         print("Logging in")
     print("Success")
 
+    result = set()
     html = BeautifulSoup(driver.page_source, "html.parser")
-    result = html.find_all("ytd-rich-grid-media", {"class": "style-scope ytd-rich-item-renderer"})
+    result.update(html.find_all("ytd-rich-grid-media", {"class": "style-scope ytd-rich-item-renderer"}))
     results = []
+    result = list(result)
     for item in result:
         title = item.find("h3",
                         {"class": "style-scope ytd-rich-grid-media"})

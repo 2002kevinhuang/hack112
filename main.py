@@ -480,37 +480,37 @@ def redrawAll(app, canvas):
             youtube_height = 127.55
             margin = 5
             shift = 7
-            temp_x = [30, 30+youtube_width+30, 30+2*(youtube_width+30)]
-
-            i = i % 3
+            temp_x = [30, 30+youtube_width+30, 30+2*(youtube_width+30),30, 30+youtube_width+30, 30+2*(youtube_width+30)]
+            
             # first row
             x = temp_x[i]
-            canvas.create_rectangle(x, horizontal_divide+65-shift, x+youtube_width,
-                                    horizontal_divide+65+youtube_height-shift,
-                                    fill='grey', width=0)
-            canvas.create_image(x, horizontal_divide+65-shift, image=ImageTk.PhotoImage(app.images[i]),
-                                anchor=tkinter.NW)
-            # vidname title text
-            canvas.create_rectangle(x, horizontal_divide+192.5+margin-shift, x+youtube_width,
-                                    horizontal_divide+192.5+margin+45-shift,
-                                    fill=app.youtubeColors[i], width=0)  # 192.5 = 65 + 127.5
-            canvas.create_text(x+10, (horizontal_divide+192.5+margin-shift)+13,
-                            text=vidname, font='5', fill=app.youtubeTextColors[i], anchor=tkinter.W)
-            canvas.create_text(x+10, (horizontal_divide+192.5+margin-shift)+32,
-                            text=creator, font='5', fill=app.youtubeTextColors[i], anchor=tkinter.W)
+            if i < 3:
+                canvas.create_rectangle(x, horizontal_divide+65-shift, x+youtube_width,
+                                        horizontal_divide+65+youtube_height-shift,
+                                        fill='grey', width=0)
+                canvas.create_image(x, horizontal_divide+65-shift, image=ImageTk.PhotoImage(app.images[i]),
+                                    anchor=tkinter.NW)
+                # vidname title text
+                canvas.create_rectangle(x, horizontal_divide+192.5+margin-shift, x+youtube_width,
+                                        horizontal_divide+192.5+margin+45-shift,
+                                        fill=app.youtubeColors[i], width=0)  # 192.5 = 65 + 127.5
+                canvas.create_text(x+10, (horizontal_divide+192.5+margin-shift)+13,
+                                text=vidname, font='5', fill=app.youtubeTextColors[i], anchor=tkinter.W)
+                canvas.create_text(x+10, (horizontal_divide+192.5+margin-shift)+32,
+                                text=creator, font='5', fill=app.youtubeTextColors[i], anchor=tkinter.W)
             # second row
             canvas.create_rectangle(x, horizontal_divide+260-shift, x+youtube_width,
                                     horizontal_divide+260+youtube_height-shift,
                                     fill='grey', width=0)
-            canvas.create_image(x, horizontal_divide+260-shift, image=ImageTk.PhotoImage(app.images[i+3]),
+            canvas.create_image(x, horizontal_divide+260-shift, image=ImageTk.PhotoImage(app.images[i]),
                                 anchor=tkinter.NW)
             canvas.create_rectangle(x, horizontal_divide+387.5+margin-shift, x+youtube_width,
                                     horizontal_divide+387.5+margin+45-shift,
-                                    fill=app.youtubeColors[i+3], width=0)  # 260 + 127.5 = 387.5
+                                    fill=app.youtubeColors[i], width=0)  # 260 + 127.5 = 387.5
             canvas.create_text(x+10, (horizontal_divide+387.5+margin-shift)+13,
-                            text=vidname, font='5', fill=app.youtubeTextColors[i+3], anchor=tkinter.W)
+                            text=vidname, font='5', fill=app.youtubeTextColors[i], anchor=tkinter.W)
             canvas.create_text(x+10, (horizontal_divide+387.5+margin-shift)+32,
-                            text=creator, font='5', fill=app.youtubeTextColors[i+3], anchor=tkinter.W)
+                            text=creator, font='5', fill=app.youtubeTextColors[i], anchor=tkinter.W)
     else:
         canvas.create_text(114,500,text="Click here to log in to YouTube")
 
