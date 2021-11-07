@@ -29,17 +29,10 @@ for item in result:
     image = item.find("div",{"class":"KL4Bh"})
     if str(image) == "None":
         continue
-    #print(str(image))
     srcIndex = str(image).find("src=")
     endOfLink = str(image).find("\"", srcIndex+6)
     image = str(image)[srcIndex+5:endOfLink]
     image = image.replace("amp;", "")
-    #print(image)
-    #print(caption.text)
-    #print(author.text)
-
-    #url = item.find("a",{"class": "yt-simple-endpoint inline-block style-scope ytd-thumbnail"})
-    #url = (str(url)[94:114])
 
     if(author is None):
         break
