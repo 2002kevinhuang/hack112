@@ -20,8 +20,9 @@ def appStarted(app):
     app.youtubeColors = ['#E68364'] * 6
     app.youtubeTextColors = ['black'] * 6
     # animations
-    app.r1, app.r2 = 1, 1
+    app.r1, app.r2, app.r3 = 1, 1, 1
     app.animateColors = ['white'] * 4
+    app.headerColors = ['#6C7A89', '#22A7F0', '#E68364', '#D24D57']
 
     # custom cursor
     # app.cursor_radius = 5
@@ -45,7 +46,7 @@ def appStarted(app):
 # initially used for testing / debugging
 # def keyPressed(app, event):
 #     print(app.reddit)
-    # useless for now
+# useless for now
 
 
 # animation too slow because CMU graphics limited to 10 fps
@@ -68,9 +69,11 @@ def mouseMoved(app, event):
     if middle-50 <= event.x <= middle+50 and height-20 <= event.y <= height+20:
         app.animateColors[0] = ['#BFBFBF']
         app.r1 = 27
+        app.headerColors[0] = 'black'
     else:
         app.animateColors[0] = ['white']
         app.r1 = 1
+        app.headerColors[0] = '#6C7A89'
 
     # twitter header animation
     middle2 = app.width/4 * 3
@@ -78,9 +81,23 @@ def mouseMoved(app, event):
     if middle2-50 <= event.x <= middle2+50 and height2-20 <= event.y <= height2+20:
         app.animateColors[1] = ['#003171']
         app.r2 = 27
+        app.headerColors[1] = 'white'
     else:
         app.animateColors[1] = ['white']
         app.r2 = 1
+        app.headerColors[1] = '#22A7F0'
+
+    # youtube header animation
+    middle3 = app.width/4
+    height3 = app.height/2 + 30
+    if middle3-50 <= event.x <= middle3+50 and height3-20 <= event.y <= height3+20:
+        app.animateColors[2] = ['#CF000F']
+        app.r3 = 27
+        app.headerColors[2] = 'white'
+    else:
+        app.animateColors[2] = ['white']
+        app.r3 = 1
+        app.headerColors[2] = '#E68364'
 
     # reddit colors
     if 30 <= event.x <= 770 and 65 <= event.y <= 103:
@@ -206,15 +223,19 @@ def redrawAll(app, canvas):
                        30 + app.r1, width=0, fill=app.animateColors[0])
     canvas.create_oval(vertical_divide / 2 * 3 - 2 * app.r2, 30 - app.r2, vertical_divide / 2 * 3 + 2 * app.r2,
                        30 + app.r2, width=0, fill=app.animateColors[1])
+    extra_margin = 15
+    canvas.create_oval(vertical_divide / 2 - 2 * app.r3 - extra_margin, horizontal_divide + 30 - app.r3,
+                       vertical_divide / 2 + 2 * app.r3 + extra_margin, horizontal_divide + 30 + app.r3, width=0,
+                       fill=app.animateColors[2])
     # section headers
     canvas.create_text(vertical_divide / 2, 30, text='Reddit', font=('Bold', '30'),
-                       fill='#6C7A89', activefill='black')
+                       fill=app.headerColors[0])
     canvas.create_text(vertical_divide / 2 * 3, 30, text='Twitter', font=('Bold', '30'),
-                       fill='#22A7F0', activefill='white')
+                       fill=app.headerColors[1])
     canvas.create_text(vertical_divide / 2, horizontal_divide+30, text='YouTube', font=('Bold', '30'),
-                       fill='#E68364', activefill='black')
+                       fill=app.headerColors[2])
     canvas.create_text(vertical_divide / 2 * 3, horizontal_divide+30, text='Instagram', font=('Bold', '30'),
-                       fill='#D24D57', activefill='white')
+                       fill=app.headerColors[3])
     # rectangles
     height, gap = 38, 15
     x, y = 30, 50
