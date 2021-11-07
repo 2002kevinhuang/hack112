@@ -20,7 +20,7 @@ from instagram import *
 
 
 def appStarted(app):
-    app.testing = 1
+    app.testing = 0
     # app.reddit = scrapeReddit()
     app.redditColors = ['#6C7A89'] * 7
     # app.twitter = scrapeTwitter()
@@ -464,6 +464,12 @@ def redrawAll(app, canvas):
     if app.youtube != []:
         vidnames = []
         for i in range(6):
+            urllib.request.urlretrieve(
+                f'{app.youtube[i][2]}',f"./images/yt{i}.png")    
+            image = Image.open(f"../hack112/images/yt{i}.png")
+            newSize = (227,128)
+            im2 = image.resize(newSize) 
+
             vidname = app.youtube[i][0]
             max_vidname = 32
             if vidname.isupper():
@@ -488,7 +494,7 @@ def redrawAll(app, canvas):
                 canvas.create_rectangle(x, horizontal_divide+65-shift, x+youtube_width,
                                         horizontal_divide+65+youtube_height-shift,
                                         fill='grey', width=0)
-                canvas.create_image(x, horizontal_divide+65-shift, image=ImageTk.PhotoImage(app.images[i]),
+                canvas.create_image(x, horizontal_divide+65-shift, image=ImageTk.PhotoImage(im2),
                                     anchor=tkinter.NW)
                 # vidname title text
                 canvas.create_rectangle(x, horizontal_divide+192.5+margin-shift, x+youtube_width,
@@ -502,7 +508,7 @@ def redrawAll(app, canvas):
             canvas.create_rectangle(x, horizontal_divide+260-shift, x+youtube_width,
                                     horizontal_divide+260+youtube_height-shift,
                                     fill='grey', width=0)
-            canvas.create_image(x, horizontal_divide+260-shift, image=ImageTk.PhotoImage(app.images[i]),
+            canvas.create_image(x, horizontal_divide+260-shift, image=ImageTk.PhotoImage(im2),
                                 anchor=tkinter.NW)
             canvas.create_rectangle(x, horizontal_divide+387.5+margin-shift, x+youtube_width,
                                     horizontal_divide+387.5+margin+45-shift,
